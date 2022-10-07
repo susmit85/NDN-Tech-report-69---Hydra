@@ -1,9 +1,0 @@
-\subsection{Design Goals} \label{subsec:design-goals}
-\begin{itemize}
-    \item Build a federated, distributed data repository system over NDN where individual data nodes are geographically distributed and contributed by the users in the community. The federated data repository should supports data insertion, deletion, and retrieval based on content names.
-    \item Once configured and deployed, the federation will perform semi-autonomously. Infrequent operations such as configuring trust, managing catastrophic failures can be performed manually but normal operations such as nodes joining the federation, recovering from node failure, replication of data should not need user involvement or operator intervention.
-    %\item Adopt a peer-to-peer federation model where nodes are contributed by users in the community and share the same role and responsibilities.
-    \item Hydra will provide content-centric access control by establishing a trust model between authenticated data publishers and consumers. It will also provide access control based on these trust schemas when new nodes join the federation.
-    \item Hydra nodes will be under different administrative domains. Hydra should be able to operate despite differences in the amount of resources and policies.
-    \item Hydra should be scalable. It should able to support publication and access of large datasets (GB to TB in size) at scale. It also plans to support a disk-to-disk throughput of 1Gbps or more. While Hydra should be able to scale to a large number of nodes (though not indefinitely), we assume the first test and deployment environments will contain tens of nodes. 
-\end{itemize}
