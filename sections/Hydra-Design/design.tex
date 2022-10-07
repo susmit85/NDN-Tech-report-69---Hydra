@@ -1,0 +1,59 @@
+\section{The Design of Hydra} \label{sec:design}
+
+
+
+\subsection{Design Goals} 
+\label{subsec:design-goals}
+We aim to build a federated, distributed data repository system over NDN, where individual storage servers are contributed by the users in the community and are geographically distributed. Here are the design goals of Hydra:
+
+\begin{itemize}
+
+\item All Hydra operations should use a data-centric security model. Our design secures Hydra as a distributed system and can secure the files stored in Hydra. To ensure the security of the Hydra federation, each Hydra server goes through security bootstrapping process to obtain its security credentials before being deployed from a Network Operation Center (NOC). All the files stored in Hydra are cryptographically signed for authenticity and can be encrypted for confidentiality. 
+
+%Hydra provides data-centric access control by establishing a trust model between authenticated data publishers and consumers. It will also provide access control based on these trust schemas when new nodes join the federation.
+
+\item Hydra should enable nodes to operate under different administrative domains. A Hydra federation should be able to operate despite differences in the amount of resources and policies.
+
+
+\item Hydra should support file insertions with automatic replication and scalable file retrieval. 
+
+\item The Hydra federation should perform semi-autonomously. Operators can perform infrequent operations such as configuring trust and managing catastrophic failures manually, but normal operations such as nodes joining the federation, recovering from node failure, and replication of data should not need user involvement or operator intervention.
+
+%Hydra is designed to scale with the number of users who may access the stored files.
+%The number of files that can be stored in Hydra largely depends on the capabilities of the storage nodes as well as the file sizes.
+%%Justin: isnt this environment specific? is this a design goal or just a goal for the initial deployment?
+
+\item Other desired performance measures for Hydra include the ability to support (a) publications of large datasets (GB to TB in size),  and (b) disk-to-disk throughput of 1Gbps or more.
+
+\end{itemize}
+
+\subsection{Design Assumptions}
+\begin{itemize}
+\item The number of nodes in a Hydra system is expected to be tens of nodes in the initial deployment; we hope to gain further insights through experimentation on how well Hydra can scale in terms of the number of nodes.
+
+\item In its initial trial deployment, Hydra does not hold the master copy of the data. Instead, it used the storage as a scratch space for publishing short-term data. All data that has not been used in a month will be automatically deleted. This assumption will be re-visited as Hydra becomes mature.
+    
+\item As a collection of user-contributed storage servers, we assume some nodes may malfunction (that lead to file errors and node unavailability), but there is no malicious node in the federation.
+
+\item Each User file insertion request is not an interactive step, which is made infeasible by the potentially long delay in carrying out a file insertion.\footnote{The size of files could be multiple gigabytes, thus uploading files to Hydra may take multiple minutes.} 
+Instead, the notification regarding success/failure will be provided to the user via a status URI. \todo{verify for correctness}
+    
+\item Hydra has a central identity manager (NOC). NOC is where the trust originates. Hydra defines trust schemes based on names and previously defined permissions. Hydra uses Google OAuth to establish identities and enforce trust schemas. Nodes are pre-authenticated. They use a bundled certificate distributed with the code.
+\end{itemize}
+
+\subsection{Design Approaches} \label{subsec:design-approach}
+Here are the design approaches for Hydra:
+
+\begin{itemize}
+
+\item For all new and existing data under our control, we adopt the principle in naming. For all existing data using URLs as unique names, we gradually remove the ``location" semantic in those names, treating them simply as unique data identifiers.
+\item All user interfaces will be kept simple. 
+\item Operations such as file insertions, deletions, and fetching will be based on the file names.
+%should require the user to send an Interest into the network (anycast). The Interest then brings back a success or failure response (along with diagnosis codes, if necessary). 
+\item The users will not be exposed to the internal workings of Hydra, such as file replication and location information of the storage servers. 
+This is not needed in Hydra since NDN routing allows users to reach the ``best" node. 
+%% However, underlying applications might need to utilize some of the location information occasionally (e.g., forwarding hint to a specific node for data retrieval).
+
+\item We take on a decentralized approach in Hydra design, even though there may be an extra cost of decentralization - communication overhead.
+
+\end{itemize}
