@@ -1,0 +1,20 @@
+\subsection{Favor} \label{sec:favor}
+Due to Hydra being a federation of storage nodes with different storage capacities and policies, it is necessary to have a mechanism that can express a node's local conditions and preferences for storing or replicating additional files.
+
+\textit{Favor} can be thought of as "how suitable a node is to carry file(s)".
+Every node is responsible for calculating a numeric value for node X where X is each node within the system including itself. The range of this numeric value is determined by the formula used. As implicitly indicated, favor is an entirely local calculation. However, all parameters of the calculation are announced by every node giving each node complete control over what and which files are stored in their respective storage. Essentially, favor protects node independence within the federated system.
+
+As it stands, favor is calculated per node and all parameters are included in every GM in order to be as up to date as possible. To limit network traffic, Hydra does not send a GM when these parameters change. See Section~\ref{sec:group-messages} for more details on GMs.
+
+Favor calculations may incorporate the following aspects:
+\begin{itemize}
+    \item storage capacity (current usage and max usage)
+    \item network stability / traffic
+    \item location
+    \item prefix preferences, file origin, node's labels, etc
+    \item local policy
+\end{itemize}
+
+Favor affects Hydra's overall performance, usability, and stability. For our initial implementation, we simplified favor's calculation to be based only on storage capacity.
+
+In the future, additional parameters and functions of favor may be necessary for different applications. For example, a baseline favor value may be necessary for high-volume storage environments to reserve some capacity for file takeovers essentially protecting Hydra's resiliency. See Section~\ref{sec:future-work} for more details on future work.

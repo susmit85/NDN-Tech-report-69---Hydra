@@ -1,0 +1,8 @@
+\subsection{Files} \label{sec:files}
+Hydra uses the term \emph{file} to describe the data unit of insertion, deletion, retrieval, or replication. However, a file is not necessarily a file in the UNIX system; it is just a BLOB of data that is identified by a unique name. See Section~\ref{sec:naming} for more details on file names.
+
+A file consists of NDN Data packet(s); however, the size of a file directly impacts the performance of the following operations: replication, failure recovery, insertion, and retrieval. These NDN Data packet(s) also determine the unit size of a particular file.
+
+%\jcp{is this following paragraph right? should we leave this access control out since its going to be in Hydra 0.3?}
+
+%Hydra is simply a holder of files as the data publisher's signature is maintained since its creation. Hydra provides access control by encrypting a file's NDN Data packet and creating a new signed NDN Data packet with the previously encrypted NDN Data packet as the content. See Section~\ref{sec:security} for more details on security and access control.

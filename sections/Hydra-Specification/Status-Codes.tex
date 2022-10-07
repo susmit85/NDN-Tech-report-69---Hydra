@@ -1,0 +1,31 @@
+\subsection{Status Codes} \label{sec:status-codes}
+
+Users can receive multiple status codes (like a server error + redirection for instance), the following is an overview of all status codes in Hydra. 
+
+% Used the following table by: https://www.tablesgenerator.com/
+\begin{table}[]
+\caption{Hydra Command Status Codes}
+\begin{tabular}{|cc|}
+\hline
+\multicolumn{1}{|c|}{\textbf{Status}}   & \textbf{Code} \\ \hline
+\multicolumn{2}{|c|}{\textbf{Informational}}            \\ \hline
+\multicolumn{1}{|c|}{STAND\_BY}         & 100           \\ \hline
+\multicolumn{1}{|c|}{FETCHING}          & 101           \\ \hline
+\multicolumn{2}{|c|}{\textbf{Success}}                  \\ \hline
+\multicolumn{1}{|c|}{OK}                & 200           \\ \hline
+\multicolumn{2}{|c|}{\textbf{Redirection}}              \\ \hline
+\multicolumn{2}{|c|}{\textbf{Client Error}}             \\ \hline
+\multicolumn{1}{|c|}{BAD\_NAME}         & 400           \\ \hline
+\multicolumn{1}{|c|}{BAD\_REQUEST}      & 401           \\ \hline
+\multicolumn{1}{|c|}{UNAUTHENTICATED}   & 402           \\ \hline
+\multicolumn{1}{|c|}{UNAUTHORIZED}      & 403           \\ \hline
+\multicolumn{1}{|c|}{NOT\_FOUND}        & 404           \\ \hline
+\multicolumn{1}{|c|}{NO\_COMMAND}       & 405           \\ \hline
+\multicolumn{2}{|c|}{\textbf{Server Error}}             \\ \hline
+\multicolumn{1}{|c|}{RESOURCE\_LIMIT}   & 500           \\ \hline
+\multicolumn{1}{|c|}{TRAFFIC\_OVERLOAD} & 501           \\ \hline
+\multicolumn{1}{|c|}{NODE\_DISCONNECT}  & 502           \\ \hline
+\multicolumn{1}{|c|}{UNKNOWN\_ERROR}    & 503           \\ \hline
+\end{tabular}
+\label{tab:status-codes}
+\end{table}

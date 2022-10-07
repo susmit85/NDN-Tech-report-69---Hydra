@@ -1,0 +1,11 @@
+\subsection{StateVectorSync Protocol} \label{sec:svs}
+
+Since Hydra is a distributed system, a distributed dataset synchronization (Sync) protocol is required to keep the global view synchronized, by communicating events such as file insertions, deletions or failures to all other nodes. Hydra uses the State Vector Sync (SVS) protocol\cite{} to achieve efficient and loss resilient global view synchronization.
+SVS is further discussed in Subsection~\ref{sec:svs}.
+
+While GMs help exchange states, we still need a way to transfer and synchronize GMs between hosts. For this purpose, Hydra utilizes the State Vector Sync (SVS) protocol. %will be leveraged for message propagation between repo nodes. 
+Note that this sync protocol only provides eventual consistency guarantees. Note that SVS only provides a pub-sub capability for message exchange. Hydra is able to utilize any other pub-sub system for message exchange.
+
+%Conveniently for us, there was a Distributed Dataset Synchronization Protocol survey published that outlines multiple current solutions for doing this\cite{}
+
+%\jcp{mention distributed dataset syn. protocols and include the survey paper}

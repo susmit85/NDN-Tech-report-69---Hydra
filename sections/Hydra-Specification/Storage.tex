@@ -1,0 +1,15 @@
+\subsection{Storage} \label{sec:storage}
+A Hydra node utilizes several databases for maintaining state and for storage of different types of data.
+
+Each of these databases is described briefly below.
+\begin{itemize}
+    \item SVS Database: A database of all published messages over the Sync group, implemented as a key-value store.
+    \item Global View: A Hydra node's state -- a relational database containing all information relating to the entire system.
+    \item Local File Storage: A key-value database holding files that the Hydra node is storing.
+    \item Local Reserved Storage: A sectioned off part of Local File Storage to only be used to help with special operations such as data ingestion. This space is not used for storing replicated files or Hydra's metadata.
+    \item Command Table: A table holding the progress and status of the commands being currently executed.
+    \item Logs: These may either be stored locally or inside a distributed logging system or both.
+    \item Certificate and Key Database: A key-value database that holds key and certificate information required for secured publication of messages, data validation, and user authentication.
+\end{itemize}
+
+Currently, we do not impose any limit on these storages. However, operational deployments will need to define the storage limit for these databases.

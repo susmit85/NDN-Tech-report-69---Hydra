@@ -1,0 +1,91 @@
+\subsection{Naming} \label{sec:naming}
+Names in Hydra are important as they are the primary construct of the system.
+
+
+Hydra uses several types of names:
+\begin{itemize}
+    \item The Hydra Prefix: decided by the operator(s).\\ Example: \name{/Hydra/}
+    \item File (content) Names: decided by data publisher(s). \\Example: \name{/human/genome/dna/hg38}
+    \item Node Names: decided by the operator(s).\\ Example: \name{/hydra/node-X1}
+    \item The NOC Prefix: decided by operator(s).\\ Example: \name{/hydra/NOC}.
+\end{itemize}
+
+%The user facing services are advertised under Hydra's prefix. The File names are independent of this Hydra prefix and as mentioned earlier, can be any NDN name. The prefixes for security operations can be separate or under the Hydra prefix.
+
+%\subsubsection{Hydra Prefix} - include user interface
+%\subsubsection{File Names}
+%\subsubsection{Node Names} - include forwarding hints
+%\subsubsection{NOC Prefix}
+
+
+
+\subsubsection{Hydra Prefix}
+The <hydra-prefix> acts as the primary namespace for Hydra operations. An example Hydra prefix can be \name{/hydra} or \name{/genomics}. 
+This hydra prefix utilizes SVS to actually distribute messages sent on this prefix to all nodes in the federation. %NDN's native anycast capability. We assume  operations can be communicated to any node in the network.
+
+Below are a few more specific uses of sub-namespaces under the Hydra prefix.
+\begin{itemize}
+    \item \name{/<hydra-prefix>/<function>/<function-info>} is utilized to conduct functions that are user-facing. Users use this prefix for inserting, deleting, and any other interaction that affects data directly within the network. An example might be \name{/hydra/insert/<filename>}.
+
+    \item \name{/<hydra-prefix>/group} is the prefix for group communications. This prefix is utilized for sending messages through State Vector Sync between nodes. The group prefix is under the Hydra prefix since it is used to notify all the nodes of changes in the system.
+    
+    %The group messaging was created on the <hydra-prefix> due to its importance of providing mass communication for larger needs to the overall network. If this was not on the <hydra-prefix> the SVS protocol would reject the communication or guidance being sent, preventing it from completing its role of notifying network wide changes.
+\end{itemize}
+
+\subsubsection{Node prefixes}
+The node prefix is utilized for unicast operations which allow Interests to be sent between a specific node and a specific target node within Hydra. The main use case of the node prefix is to enable communication between Hydra nodes. The node prefix is also used for directing a user request to a specific node if the contacted node does not have the content. It is also used for replication.
+%Fetching content is utilized for Hydra needs such as replication to the system. Sending an interest for this data would be done through
+The node prefix is in the form of \name{/<node-name>/<hydra-prefix>/fetch/...}. This can be appended by operation or content specific names.
+% by  content that the node would like to fetch from Hydra. 
+%\todo[inline]{clarify this name}
+
+\subsubsection{ForwardingHints}
+When data is not present in the node that a user contacted, it returns the name of the node that holds the data. This forwarding hint allows the user to express a subsequent Interest that is steered to a specific node name. 
+One example might be \name{/human/genome/dna/hg38} with a forwarding hint to \name{hydra/node-X1}.
+
+
+%NDN Interests to present a list of names (delegations)
+%which are the main use case for naming by allowing users to map any
+%provide a pointer to another name. 
+%name to any other name. This means that many names can express the same Interest for content such as \name{/genomics/file/example/1} is in reality expressing \name{/hydra/fetch/genomics/file/example/1}. This versatility in naming allows for easy adoption of datasets from other applications.
+
+\subsubsection{Name Prefixes for NOC}
+% \todo[inline]{Add these from AlexA's presentation}
+
+NOC is considered the trust anchor of Hydra. While it is not part of the Hydra federation, it uses NDN names for receiving requests. The name prefixes for NOC would be \name{/hydra/NOC/...}.
+
+
+%\name{/hydra/keys/KEY/...}.
+
+%\pp{I am not sure what other things to add here}
+
+\subsubsection{Node Naming}
+%\todo[inline]{There are several assumptions here that need to be reviewed}
+%The naming of a Hydra node is not immediately apparent as there are limitations and advice to be utilized when deciding a name. The limitations ordinate from our data distribution protocol, SVS, which may be improved or changed in the future for the longevity of Hydra. Nevertheless, these limitations should always be heavily considered when creating node names.
+
+%A short name (<= 20 characters) is almost necessary for %Hydra as long names limit the number of nodes able to join Hydra. SVS's sync interests which contain all node names have an innate problem with the maximum size of an NDN interest. Due to our modifications of SVS, we do handle the case where the sync interest is too large to be a valid NDN interest. However, this increases network overhead so it should be avoided. As such, we strongly recommend that all names contain 20 characters or less to ensure Hydra can include a decent amount of nodes which is extremely important for long term usage.
+
+Nodes names are required to be unique. Hydra does not add any extra components to a node name when using it for communication. 
+%This is not only because of the space limitation but also because the node names should make an attempt to precisely describe the node. %From the fact of being an NDN application, there is not an IP address indicating the exact system of a node. Therefore, the name of a node naturally produces merit when chosen carefully. Examples of good 
+Example names can be
+%are the following:
+\name{'/TnTech/CSC/hydra'} or \name{'/hydra/node-xx'}, or \name{'/norm-labs/hydra-5'}.
+
+
+\subsubsection{Certificate names}
+Hydra uses a hierarchy of certificate names to provide trust. 
+
+An example Hydra root key (hydra root = hydra trust anchor) would be \name{/hydra/KEY/…}.
+
+Node cert names can be \name{/hydra/32=nodes/host.ucla/KEY/… (key for UCLA node)} or 
+\name {/hydra/32=nodes/fabric-hostXYZ/KEY/… (key for hostXYZ)}.
+
+The user cert names can be  \\
+\name{/hydra/32=users/XX@gmail.com/32=ns/FIU/experiments/KEY/...} or 
+\\
+\name{/hydra/32=users/YY@gmail.com/32=ns/FIU/experiments/2022/KEY/...}
+
+
+
+\subsubsection{Content naming}
+There are two ways we can name files in Hydra. First, we can utilize the content names created by the publisher. Example of such a name would be \name{/human/genome/dna/hg38}. The other option is to utilize Hydra specific names such as \name{/hydra/human/genome/dna/hg38}. While both are acceptable, there are a few trade-offs. With the first option, we assume the owner of the name prefix (i.e., \name{/human/genome} will allow Hydra to announce the prefix. Second, if publishers publish content using different name prefixes, a Hydra node must announce all those name prefixes into the routing system (e.g. \name{/human/genome} and \name{/kidney}). Finally, creating an easy-to-utilize trust schema that might be difficult. \too{verify}. On the other hand, appending the \name{/Hydra} prefix to each name makes trust relations and routing announcements simpler. A node can simply announce the \name{/Hydra} prefix into the routing system. However, this requires changing the content names (e.g./ \name{/human/genome/dna/hg38} becomes \name{/hydra/human/genome/dna/hg38}, which makes the content specific to the Hydra framework. For our implementation, we use the first naming model.\todo{verify}.

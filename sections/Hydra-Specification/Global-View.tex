@@ -1,0 +1,51 @@
+\subsection{Global View} \label{sec:global-view}
+The Global View can be thought of as %"what a node views the entire system as".
+a node's view of the entire system.
+
+As nodes exchange messages (Group Messages, see next section), a Hydra node creates and stores the state of the system in a light-weight local database known as the 'Global View'. 
+
+%With every node receiving every Group Message, Hydra needs a way for nodes to store that information. Rather than storing raw Group Messages, Hydra stores the effects of each Group Message along with any relevant information in a light-weight local database known as the 'Global View'. 
+
+Note that this Global View is not stored once in a global storage accessible by every node. Instead, each node has its own version of this global view that they maintain. Throughout the duration of operation, a Hydra node synchronizes this database with the other nodes through continuously published group messages.
+
+%and is constantly checked for possible actions to be taken by the node.
+
+Every node in Hydra has a global view of:
+\begin{itemize}
+    \item All node information
+    \item Each file’s specifics
+    \begin{itemize}
+        \item which nodes are in possession of the file (the “on list”)
+        \item which nodes can step up to take over the file (the “backup list”)
+        \item meta-info (size, origin node, copies, and etc)
+    \end{itemize}
+\end{itemize}
+
+The Global View also has the ‘state vector’ that made up the Global View. This state vector is the same type found in SVS and indicates the sequence of messages that were incorporated into the state.
+
+Global View layout example (capital alphabetical letters are placements for node names):
+{\small
+\begin{spverbatim}{
+"state_vector": {"A":123,"B":120,"C":100,"D":150,"E":123},
+
+"nodes": [
+    {"name": "D", "favor": 50, “alive”: True},
+    {"name": "C", "favor": 20, “alive”: True},
+    {"name": "B", "favor": 15, “alive”: True},
+    {"name": "A", "favor": 10, “alive”: True},
+    ...
+    ],
+
+"files":[
+    {
+        "name": "/genomics/fileA",
+        "size": 128,
+        "contact": "B",
+        "copies": 3,
+        "on": ["B","A","D"],
+        "on_history": ["C"]
+    },
+    ...
+    ]
+}\end{spverbatim}
+}

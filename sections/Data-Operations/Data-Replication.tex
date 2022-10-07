@@ -1,0 +1,46 @@
+\subsection{Data Replication - Justin} \label{sec:data-replicate}
+
+
+\subsubsection{Scenario}
+The FABRIC platform that the Hydra instance is running on is seeing a dramatic increase in popularity. As such, new sites have been installed and more users have been added. With tens of sites and users, site failures can happen.
+%occurrence like in most distributed systems. However, there can be temporary outages as well that FABRIC experiences. Therefore, 
+Hydra needs to have a fast replication mechanism in order to quickly recover from Hydra node failures.
+%while also making temporary outages not as expensive. Also, 
+Hydra should be able to copy Alice's file that she inserted in Subsection~\ref{sec:data-insert} several times (3 being Hydra's base policy) to prevent permanent file loss. To satisfy these scenarios, the following interactions are conducted.
+
+
+\subsubsection{Module Interaction}
+A replication need is noticed by the Global View Checker (see Figure~\ref{fig:checker-sys} for more details).
+
+This need is a result of one of the following: 
+\begin{enumerate}
+    \item An Insert GM is heard.
+    \item A Node has become unresponsive.
+\end{enumerate}
+
+Regardless of how the need for replication is realized, replication happens in the exact same way using Claim GMs and Store GMs.
+
+When node (X) sees replication needs, it creates a list of the files that:
+\begin{enumerate}
+    \item Do not meet the necessary degree of replication counting nodes that are currently fetching the file and not counting unresponsive nodes
+    \item Node (X) is the highest favored alive node that does not have the file already and that can store the file given its amount of storage it has left.
+\end{enumerate}
+
+After creating this list, it does the following:
+\begin{enumerate}
+    \item Out of this list, It selects as much as is feasible to fetch while prioritizing larger files.
+    \item Node (X) forms a positive Claim GM including this selection while also updating its values according to what would they would be after all files are retrieved.
+    \item Node (X) applies this GM to its Global View.
+    \item Node (X) publishes this GM using SVS, our distributed synchronization protocol.
+    \item Node (X) starts to fetch the selected files by sending interests following the format /<node-name>/<hydra-prefix>/fetch/<file-name>/<segment-no> where the node name is a 
+    %randomly 
+    selected node that has the file already.
+\end{enumerate}
+
+Other nodes can form a positive Claim GM upon hearing node (X)'s Claim GM which allows for concurrent fetching across the Hydra nodes. If node (X) does fail to get fully retrieve file (F), node (X) can form a negative Claim GM stating that node (X) will not be fetching file (F) anymore. \todo[inline]{what if X fails while retrieving? (we need to discuss this in our node ops)} After fully fetching file (F) though, node (X) will form a Store GM for file (F), apply this GM to its Global View, and publish this GM using SVS.
+
+When nodes receive the Store GM for file (F) from node (Y) through SVS, they simply update their Global Views to state that node (Y) has file (F).
+
+
+\subsubsection{Data Structure Formats}
+The entire data replciation process consists of several GMs. Please refer back to Section~\ref{sec:group-messages} for more details on their structure.

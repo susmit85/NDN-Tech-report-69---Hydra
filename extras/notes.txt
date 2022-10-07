@@ -1,0 +1,18 @@
+
+- brief intro to SVS
+- comparative study of distributed data set syncs
+- last survey Hydra paper
+- NDN (the very first paper describing NDN)
+- pubsub protocol
+- FABRIC paper
+- distributed systems paper?
+- what is in a name
+- the single python ndn repo paper
+
+
+
+Terms:
+
+* Storage = A Node's Local Disk Storage
+* Management = implies authority
+* 

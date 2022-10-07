@@ -1,0 +1,11 @@
+New NDN Repo Protocol Specification -
+https://docs.google.com/document/d/13JDVsnkGFj9eJchrNT5ZH_9S263QHikTHsRlcG_w1PQ/edit?usp=sharing
+
+Distributed NDN Repo Developer Guide -
+https://docs.google.com/document/d/1qr4S_k_4IoNerMbA97d461b67LsWJeDWf4Nb-A6iDVk/edit?usp=sharing
+
+Hydra Slides -
+https://docs.google.com/presentation/d/11DW08QmzEZ2syj4iyKkSt4TeDt2Q9uMI776QWbYbJxM/edit#slide=id.p
+
+Hydra Decision Tree -
+https://docs.google.com/document/d/1c6w5DOmw3YSYzL3TZpzRdsBPw-v4uu35L5-wIx7IHpg/edit?usp=sharing

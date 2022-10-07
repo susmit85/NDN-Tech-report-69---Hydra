@@ -1,0 +1,28 @@
+\section{Hydra Operational Details} \label{sec:data-operations}
+
+To demonstrate how Hydra performs data operations, we will utilize an initial deployment on FABRIC\cite{}.
+
+For the scenario, all of the following FABRIC sites have a Hydra node:
+\begin{itemize}
+    \item Clemson
+    \item StarLight
+    \item Washington
+    \item Dallas
+    \item Salt Lake City
+    \item San Diego
+\end{itemize}
+
+\jcp{talk about the command table}
+
+Imagine the scenario where Clemson's Genomics and Bioinformatics facility decides to use Hydra to store pre-processed (i.e. indexed) genomes. The main goal of this exercise is to allow data access for the researchers and their collaborators in a reliable manner.
+%for themselves and others to use this data without spending valuable resources on the genome indexing pre-processing step. 
+
+A user can download the correct set of files and insert into downstream analytic workflows simply by asking for these datasets by name. \jcp{why does the user care about this?}
+
+%Hydra will dramatically simplify data processing. Of course, they are able to re-process the raw genome data files if needed.
+
+\input{sections/Data-Operations/Data-Insertion}
+\input{sections/Data-Operations/Data-Replication}
+\input{sections/Data-Operations/Data-Retrieval}
+\input{sections/Data-Operations/Data-Querying}
+\input{sections/Data-Operations/Data-Deletion}

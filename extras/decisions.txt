@@ -1,0 +1,43 @@
+
+
+Firm Decisions
+* Sending Commands - PubSub Way (Ping Flood DDoS, RTT increase)
+* Storage Management - Federated, no local node control (ensuring end user control?)
+* External Look into Hydra - Queries, global view info
+* Granularity of Data - File Level (massive files?)
+* Node Equality - All actions, roles, and controls are equal
+* Minimal operation requires 3+1 nodes
+* No Compromised nodes
+* Data Retrieval - ForwardingHint instead of Passthrough
+* Baseline Replication Factor of 3, 3 for backup also
+
+
+Unsure Decisions
+* File Favor Calculation / Favor Thresholds
+* Prefix, Size Node Preferences (avoidance of irrelevant files on node)
+* How to select nodes to forward to
+* When to delete node info / when to step up and take place / How to handle network outages - HDFS/CASSANDRA
+* Ordering of Commands / Handling Multi-cast Commands
+* Global Favor or Individual File Favor Declaration
+* How to join / rejoin back into the System
+* How snapshots are going to work
+
+Modules
+* Effortless Local Policy (Mitéra or Ananke)
+    - 'Touching' Files - Files default with month duration
+    - Template for Users to state local policy
+    - File Replication Popularity Handler
+* Automatic Corrupted Node Detection (Phobos or Artemis)
+* Logging (Mnemosyne)
+* Security (Securitas)
+* Some Type of Favor Module (Aphrodite)
+* Snapshots
+* Admin Queries or Monitoring (Ichnaea)
+
+
+Questions:
+
+Is the interest metadata stored in a database or in the named file in the network?
+Do we need a trigger’ to load data dynamically the testbed?
+How does the NDN container function with GEMMaker?
+How do we create faces/routes via his Data Transfer Pod (DTP)?

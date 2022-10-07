@@ -1,0 +1,17 @@
+\section{Security - Alex/Proyash/Tianyuan} \label{sec:security}
+
+Acts as the system trust anchor for Hydra deployments, and issues security certificates. A new Hydra node fetches a certificate by sending an Interest. Next the node verifies the returned self-signed certificate out-of-band. Then the node signs the Interest and requests a certificate from the NOC. Finally, NOC signs the certificate using the trust anchor and returns it in the replied data.
+
+
+
+
+In order to authenticate the Hydra group communications and interactions with users, Hydra’s security model includes three roles in the system.
+\begin{itemize}
+\item Network Operator Center (NOC): serving as the system trust anchor for each Hydra deployment, adding or deleting Hydra nodes from the federation, and managing the security policies for the Hydra system.
+\item Hydra Node: a server that joins the federated repo system. One trusted server might start a new process if the old one terminates.
+\item Client: users who use the Hydra system by sending Insertion and Deletion commands or data requests.
+\end{itemize}
+
+In Hydra’s security design, we assume the NOC is trusted, and each Hydra node is also trusted once added. To bootstrap one Hydra node to the system, out-of-band verification (e.g., pre-shared passcode, email verification) is needed to authenticate the initial communication between the Hydra node and NOC. A new Hydra node fetches the trust anchor by sending Interest /hydra/bootstrap/anchor, and verifying the returned self-signed certificate out-of-band. Then it uses the out-of-band pre-shared material to sign Interest /hydra/bootstrap/cert and request a certificate from the NOC. Verifying the certificate requester’s authenticity, the NOC uses the trust anchor to sign a certificate and returns it in the replied Data. The new Hydra node learns its node name from the certificate via certificate installation. After installing the trust anchor and node certificate, the Hydra node keeps its security policies up-to-date by periodically send Interest /hydra/bootstrap/schema and fetch new policies.
+\\The Hydra group communication should also be protected from invalid message senders. Therefore, Hydra requires each node to sign the Interest and Data in group communication and enforce the system membership checking through verifying the signer’s certificate with the trust anchor.
+\\Besides that, users’ commands to the Hydra system should also be authenticated. Different from authenticating the group communication among Hydra nodes, Hydra users do not share the trust anchor with the Hydra nodes. The identity of users can only be verified along the certificate chain when the Hydra nodes have users’ trust anchors. Hydra achieves this via security policy distribution, where individual Hydra nodes fetch the trusted anchors and corresponding signing rules under those namespaces.

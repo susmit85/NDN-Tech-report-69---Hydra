@@ -1,0 +1,34 @@
+\section{Introduction} \label{sec:introduction}
+This tech report describes Hydra, a distributed and decentralized data repository system built over NDN. The motivation for this work comes from the needs of scientific communities such as genomics, climate science, and high-energy particle physics that often follow a distributed collaborative model where data is published and accessed by scientists worldwide. Hydra provides an easy-to-use platform for publishing and accessing such datasets through a distributed, federated storage system where a specific community or a project provides individual storage nodes./ %scientific datasets
+%\aaa{where? (distributed/community storage/easily deployed storage/?)}
+
+This tech report gathers all the Hydra design decisions and the lessons learned through the design process in one place. The report also describes the implementation of Hydra, how it provides users with secure and scalable file publishing and sharing services built using the NDN protocol stack, and our experience of Hydra's first deployment on the FABRIC testbed\cite{8972790}.
+
+Hydra is designed to run over a federation of storage servers provided by different user organizations. Users can publish files to Hydra, which can be shared securely and scalably following defined access policies. Hydra also maintains a consistent ``system state" among all the storage servers utilizing the NDN State Vector Sync (SVS) protocol\cite{8599772}.
+Hydra automatically replicates files to maintain a desired degree of replication even in the face of individual server failures.
+
+Specifically, Hydra is designed to achieve the following goals.
+\begin{enumerate}
+\item Reducing scientific communities' data publication and management burden. Currently, data is published through ad hoc systems or centralized repositories, none of which work well with the rapidly exploding distributed datasets. Hydra provides a decentralized framework that allows scientists to publish datasets easily and scalably.
+\item Enabling fast and reliable data replication across distributed nodes. Once a node fails, Hydra automatically replicates files to the available nodes, and the system can continue to run after the failure without operator intervention (barring catastrophic failures) 
+%Improving system reliability by replicating data multiple times across distributed nodes. \aaa{replication is a natural part of any publishing system... this cannot be a distinct aim...}  
+\item Improving data repositories' performance and supporting more users and applications by distributing read and write requests to different data nodes.
+\item Improving data findability and reusability of data by addressing data by their names. This approach will allow the communities to spend less time curating data and tracking their locations once they agree on a project-specific namespace. 
+\item Incorporating data-centric security in the design. All data in Hydra are signed and publicly verifiable.
+\end{enumerate}
+
+Hydra uses the data-sharing model in the genomics community as the primary use case. In this community, data is generated in a distributed manner by various research facilities. The researchers then send the data to central facilities (e.g., repositories hosted by National Center for Biotechnology Information or NCBI) that make them available publicly. Apart from the centralized model, this approach has two problems that impede efficient data sharing. First, data publication through a central repository includes a manual component (checking and processing for quality and conformity to naming standards) and can take a long time (weeks or months) before data is available. Second, these central repositories accept specific types of datasets. Datasets that are not accepted by central repositories have to be published in ad hoc ways, making them very difficult to find and utilize in research. Hydra makes this process automated and simpler through the expressive naming of content. Once datasets are named according to community-accepted standards, they can be immediately published through Hydra and discovered and utilized by the users and workflows.
+
+%\aaa{Need to say what is being checked manually and why Hydra can avoid it; why Hydra can accept any datasets (expressive naming?)}
+
+
+%\subsection{Motivation} \label{subsec:motivation-challenges}
+%The motivation to build a distributed repository are the following.
+%\begin{itemize}
+%\item Hydra aims to provide an easy-to-use platform for publishing and accessing scientific datasets. It will allow scientists to publish and request data by name. Currently, scientific data is published either through ad-hoc systems or centralized repositories, none of which work well with the rapidly exploding distributed datasets. Hydra will provide a framework that will allow the scientific communities to create their own data federation. 
+    %\item Hydra will to improve data repositories' performance and support more users and applications by distributing read and write requests to different data nodes.
+    %\item Hydra aims to reduce user' data management burden and improve system reliability by replicating data multiple times across distributed nodes. Once a a node fails, Hydra automatically replicate files to the available nodes, and the system can continue to run after the failure without operator intervention (barring catastrophic failures).
+    %\item Hydra will improve data findability and reusability of data by addressing data by their names. This will allow the communities to spend less time curating data and tracking their locations once they agree on a project-specific namespace. 
+ 
+    % a transparent data publication and retrieval system based on the content's name will reduce the data management burden on the users or domain scientists.a
+%\end{itemize}

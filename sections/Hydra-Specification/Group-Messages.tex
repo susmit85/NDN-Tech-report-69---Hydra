@@ -1,0 +1,21 @@
+\subsection{Group Messages} \label{sec:group-messages}
+%In a distributed system, the existence of a message protocol 
+%smoothies communication between nodes allowing the system to act as one entity. 
+%Hydra is no different and operates using 'Group Messages' (GMs). 
+Hydra utilizes Group Messages (GMs) to exchange updates among nodes.
+A published Group Message goes out to every node within Hydra such that every node receives every Group Message. %The philosophy behind this is that nodes can act in a more precise and knowledgeable way knowing all past actions within Hydra.
+Understanding  all past actions in Hydra allows the nodes to act in a more precise and knowledgeable manner.
+
+There are six Group Message types with each performing different actions. %These messages are used for  having different effects within the system:
+\begin{itemize}
+    \item Insert: a GM containing metadata of a new file that is inserted in Hydra.
+    \item Delete: a GM containing information about a file to delete from Hydra.
+    \item Claim: a GM stating the node is going to fetch or is unable to fetch a certain file.
+    \item Store: a GM stating a node has stored a file in its local storage. %information needed to know that a node stored a file.
+    \item Heartbeat: a GM that is periodically published by nodes to let others know that it is alive. In our current implementation, the interval of heartbeats is set to 30 seconds. %maintain a soft state.
+    \item Correct: a GM to correct a local storage v.s. system information mismatch, used by previously failed nodes. \todo[inline]{Susmit - don't remember discussing this}
+    \item Leave: a GM send by a leaving node in order to help speed up replication
+\end{itemize}
+
+To keep network overhead low, we treat all messages as heartbeat messages. If there is no GM withing a specified time, a specific heartbeat message is announced.
+%Our distributed dataset  synchronization protocol will likely be expensive on a network. Therefore to help tackle this, every GM is technically a Heartbeat GM to limit GM traffic.

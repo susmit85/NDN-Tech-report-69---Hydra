@@ -1,0 +1,128 @@
+\documentclass[10pt, sigconf]{acmart}
+
+\usepackage[english]{babel}
+\usepackage{blindtext}
+\usepackage{eso-pic}
+\usepackage{todonotes}
+\usepackage{booktabs} % For formal tables
+\usepackage{titlesec}
+\usepackage{listings}
+\usepackage{hyperref}
+
+\graphicspath{{figure/}{figures/}}
+
+% Copyright
+\renewcommand\footnotetextcopyrightpermission[1]{}
+\settopmatter{printacmref=false, printccs=false, printfolios=true}
+
+\setcopyright{none}
+\usepackage{eso-pic,xcolor,enumitem}
+
+\usepackage{color,soul}
+\usepackage{xspace}
+
+\DeclareRobustCommand{\hlcyan}[1]{{\sethlcolor{cyan}\hl{#1}}}
+\DeclareRobustCommand{\hlgreen}[1]{{\sethlcolor{green}\hl{#1}}}
+
+%%\newcommand{\todo}[1]{\hl{\textbf{TODO:} #1}\xspace}
+\newcommand{\ISSU}[1]{\hlgreen{\textbf{ISSUE:} #1}\xspace}
+\newcommand{\NOTE}[1]{\hlcyan{\textbf{NOTE:} #1}\xspace}
+\usepackage{ifthen}
+
+\newboolean{showcomments}
+\setboolean{showcomments}{true}
+\ifthenelse{\boolean{showcomments}}
+{ \newcommand{\mynote}[3]{
+    \protect\fbox{\sffamily\scriptsize#1}
+    {\small$\blacktriangleright$\textsf{\emph{\color{#3}{#2}}}$\blacktriangleleft$}}}
+{ \newcommand{\mynote}[3]{}}
+\newcommand{\lz}[1]{\mynote{Lixia}{#1}{magenta}}
+\newcommand{\jcp}[1]{\mynote{Justin}{#1}{blue}}
+\newcommand{\xw}[1]{\mynote{Xi}{#1}{blue}}
+\newcommand{\pp}[1]{\mynote{Proyash}{#1}{green}}
+\newcommand{\vpp}[1]{\mynote{Varun}{#1}{red}}
+\newcommand{\aaa}[1]{\mynote{Alex}{#1}{green}}
+\newcommand{\ty}[1]{\mynote{Tianyuan}{#1}{teal}}
+
+\usepackage{subcaption}
+
+\usepackage{etoolbox}
+\usepackage{xstring}
+\DeclareListParser{\doslashlist}{/}
+
+\newcounter{ndnNameComponentCounter}%
+\newcommand{\name}[1]{{%
+  \setcounter{ndnNameComponentCounter}{0}%
+  \renewcommand{\do}[1]{{%
+    \ifnumgreater{\value{ndnNameComponentCounter}}{0}{\allowbreak/}{}%
+    \ifnumodd{\value{ndnNameComponentCounter}}{}{}%
+    \detokenize{##1}}%
+    \stepcounter{ndnNameComponentCounter}}%
+``{\fontfamily{cmtt}\selectfont\IfBeginWith{#1}{/}{/}{}\doslashlist{#1}}''%
+}}
+
+\let\Bbbk\relax %% redefined in newtxmath.sty, which is imported in acmart.cls
+\usepackage{amssymb}
+\usepackage{url}
+\usepackage{tabularx}
+\usepackage{xurl}
+
+\newtheorem*{assumption}{Assumption}
+
+\usepackage[algoruled,vlined,noend,linesnumbered]{algorithm2e} 
+\usepackage{spverbatim}
+
+\renewcommand{\algorithmcfname}{ALGORITHM}
+\SetAlFnt{\small}
+\SetAlCapFnt{\small}
+\SetAlCapNameFnt{\small}
+\SetAlCapHSkip{0pt}
+\IncMargin{-\parindent}
+\setcopyright{none}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+\title{NDN-TR69: Hydra - A Federated Data Repository over NDN}
+\author{}
+\date{\today}
+
+\tableofcontents
+\begin{abstract}
+Today's big data science communities manage their data publication and replication at the application layer. These communities utilize myriad mechanisms to publish, discover, and retrieve datasets - the result is an ecosystem of centralized or ad-hoc data repositories. Publishing datasets to centralized repositories can be process-intensive, and those repositories do not accept all datasets. The ad-hoc repositories are extremely difficult to find and utilize due to differences in data names, metadata standards, and access methods. To address these problems, some communities use high-level frameworks such as iRODS. However,  since these solutions depend on location-oriented TCP/IP protocols, they need to hide the complexity of creating location-independent services over TCP/IP, making them tightly coupled and complex to build and maintain. While storing and accessing all data from commercial cloud platforms could be another solution, such platforms can be costly for storing and serving large amounts of data.
+
+To address the problem of scientific data publication and storage, we have designed \textit{Hydra}, a secure, distributed, and decentralized data repository made of a loose federation of storage servers (nodes) provided by a user community. Hydra runs over Named Data Networking (NDN) and utilizes the State Vector Sync (SVS) protocol that allows the nodes to maintain a ``global view" of the system. Hydra provides a scalable and resilient data retrieval service, with data distribution scalability achieved via NDN's built-in data multicast and in-network caching and resiliency against individual server failures through automated failure detection and maintaining a specific degree of replication. Hydra utilizes a ``Favor", a locally calculated numerical value to decide which nodes will replicate a file.
+Finally, Hydra utilizes data-centric security for data publication and node authentication. Hydra uses a Network Operation Center (NOC) to bootstrap trust in Hydra nodes and data publishers. The NOC distributes user and node certificates and performs the proof-of-possession challenges. 
+
+This technical report serves as the reference for Hydra. It outlines the design decisions, the rationale behind them, the functional modules, and the protocol specifications. 
+\end{abstract}
+\maketitle
+\pagestyle{plain}
+
+% Please look at "extras/decisions.txt" for areas we still dont know about (slightly outdated)
+% Please look at "extras/documents.txt" to find all the other documents related to Hydra
+
+\input{sections/Introduction}
+\input{sections/Hydra-Design/base}
+\input{sections/Hydra-Overview/base}
+\input{sections/Hydra-Specification/base}
+\input{sections/Data-Operations/base}
+\input{sections/Node-Operations}
+\input{sections/Security}
+\input{sections/Fabric}
+\input{sections/Discussions}
+\input{sections/Conclusions}
+\input{sections/Future-Work}
+
+\bibliographystyle{IEEEtran}
+\bibliography{references.bib}
+
+\end{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+

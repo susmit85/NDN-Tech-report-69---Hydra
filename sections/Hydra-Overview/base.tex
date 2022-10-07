@@ -1,0 +1,41 @@
+\section{Hydra Functional Details} \label{sec:overview}
+
+
+
+%\todo[inline]{Susmit - A paragraph on overview}
+Hydra is a federated storage system where participants from a big data community (e.g., genomics) contributes storage. Hydra utilizes NDN to create a federation of storage servers. The Hydra federation allows users to publish data into the system using data names agreed-upon by the community, making them readily available and lowering the barrier of data publication.
+
+%system part, federated system, community provided servers, how they get added to the system
+%how users canmake use of things
+
+\begin{figure*}[!ht]
+    \centering
+    \includegraphics[width=\textwidth]{visuals/overview.png}
+    \caption{A High-level overview of Hydra}
+    \label{fig:overview}
+\end{figure*}
+
+ Figure~\ref{fig:overview} outlines Hydra's general structure along with an overview of the functions performed by Hydra. In its simplest form, a Hydra federation has several geographically distributed nodes and one or more pub-sub groups that allow the nodes to exchange messages among themselves. The Hydra federation also relies on a NOC that is not part of the federation but distributes certificates to the nodes and publishers. 
+
+The process of inclusion of a node into Hydra begins by creating a default route to one of the Hydra nodes and requesting a certificate from the NOC. The NOC authenticates the requests and returns a certificate that the node uses for signing further communication. This completes node bootstrapping. Once the Hydra nodes are bootstrapped and the NOC distributes certificates, a publisher can send an Insert command with a file name \todo{confirm we are NOT using signed Interest}. The command is routed to a Hydra node (decided by NDN routing) that verifies the command and ingests the file. Once the file is ingested, a group message is triggered. Other nodes subscribing to the group message topic receive the notification, update their global view, and some of the nodes start to replicate the file. Each successful replication publishes a group message that allows the nodes to keep track of the degree of replication. The nodes also send out periodic heartbeats to the other nodes so that failure recovery can begin when a node goes offline. Finally, a user or a workflow retrieves a file by sending an Interest with the requested file name to Hydra. This command is routed to a Hydra node that returns the file.
+%that authenticates the command, checks if the user is allowed to retrieve the file and returns the file. 
+If the file is not available at this node, it sends back a message with a forwarding hint that the application follows to retrieve the file.
+
+\input{sections/Hydra-Specification/Naming} % needs work
+
+\input{sections/Hydra-Overview/Functions}
+\input{sections/Hydra-Overview/Modules}
+% \section{The Hydra Specification} \label{sec:specification}
+
+% This section describes the entire Hydra specification in detail.
+
+\input{sections/Hydra-Specification/Files} % good
+\input{sections/Hydra-Specification/Favor} % good
+\input{sections/Hydra-Specification/Storage} % needs work
+\input{sections/Hydra-Specification/SVS} % needs work
+\input{sections/Hydra-Specification/Group-Messages} % needs work
+\input{sections/Hydra-Specification/Global-View} % needs work
+\input{sections/Hydra-Specification/PubSub} % needs work
+\input{sections/Hydra-Specification/Command-Structures} % needs work
+\input{sections/Hydra-Specification/Status-Codes} % needs work
+%\input{sections/Hydra-Specification/Security} // SECURITY STUFF ADD % needs work

@@ -1,0 +1,34 @@
+
+% hydra replicates things 3 times
+% hydra has the same favor formula for all nodes
+% allow certain queries per hydra
+
+\subsection{Design Decisions}
+This section outlines the design decision of our implementation.
+
+\begin{itemize}
+    
+    \item Hydra does not hold the master copy of the data. We treat Hydra as a scratch space for publishing short term data. For the first implementation, we delete all data that has not been used in a month.
+    
+    \item For data insertion, the user does not require a real time response. Notifications to the user can be provided by a status URI.
+    
+    
+    %\item Users use anycast when sending commands or retrieving files. Uploading  files is a unicast operation.
+
+    \item Hydra will have a central identity manager (NOC). NOC is where the trust originates. Hydra defines trust schemes based on names and previously defined permissions. Hydra uses Google OAuth for establishing identities and utilize those to enforce trust schemas. Nodes are pre-authenticated. They use a bundled certificate distributed with the code.
+    
+     \item In our present design we assume nodes can malfunction but there is no malicious node in the federation.
+   
+\end{itemize}
+
+% \subsection{Operational Assumptions} \label{subsec:design-assumptions}
+% We make the following operational assumptions that we will revisit periodically.
+% %\todo{add security assumptions} 
+
+% \begin{itemize}
+
+    
+%     \item In our present design we assume nodes can malfunction but there is no malicious node in the federation.
+
+%     %\todo{User certificates and node certificates, authentication, trust schema}
+% \end{itemize}
